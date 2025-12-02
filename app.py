@@ -13,6 +13,8 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+import textwrap
+import textwrap
 
 # ==========================================
 # 1. CONFIGURATION
@@ -353,7 +355,7 @@ def display_movies_grid(movies_to_show):
         for idx, data in enumerate(batch):
             with cols[idx]:
                 link_url = f"?id={data['id']}&user={st.session_state.username}"
-                st.markdown(f"""
+                st.markdown(textwrap.dedent(f"""
                 <a href="{link_url}" target="_self" style="text-decoration:none;">
                     <div class="movie-card">
                         <img src="{data['poster']}">
@@ -363,7 +365,7 @@ def display_movies_grid(movies_to_show):
                         </div>
                     </div>
                 </a>
-                """, unsafe_allow_html=True)
+                """), unsafe_allow_html=True)
 
 # Navigation
 def set_detail(movie_id): 
@@ -429,7 +431,7 @@ if not st.session_state.logged_in:
 
 else:
     # --- LOGGED IN HEADER ---
-    st.markdown(f"""<div class="nav-header"><div class="logo">CineMatch</div><div class="user-badge">👤 {st.session_state.username}</div></div>""", unsafe_allow_html=True)
+    st.markdown(textwrap.dedent(f"""<div class="nav-header"><div class="logo">CineMatch</div><div class="user-badge">👤 {st.session_state.username}</div></div>""", unsafe_allow_html=True)
     
     # --- SIDEBAR ---
     with st.sidebar:
@@ -481,7 +483,7 @@ else:
             st.rerun()
         
         # 2. Hero Section
-        st.markdown(f"""
+        st.markdown(textwrap.dedent(f"""
         <div class="hero-container" style="background-image: url('{m['backdrop']}');">
             <div class="hero-overlay">
                 <img src="{m['poster']}" class="hero-poster">
@@ -498,7 +500,7 @@ else:
                 </div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
         
         # 3. Main Split (Left: Content, Right: Info)
         col_left, col_right = st.columns([2, 1])
@@ -509,11 +511,11 @@ else:
                 cols = st.columns(6)
                 for i, actor in enumerate(m['cast_rich'][:6]):
                     with cols[i]:
-                        st.markdown(f"""
+                        st.markdown(textwrap.dedent(f"""
                         <div class="cast-container">
                             <img src="{actor['photo']}" class="cast-img">
                         </div>
-                        """, unsafe_allow_html=True)
+                        """), unsafe_allow_html=True)
                         if st.button(actor['name'].split()[0], key=f"act_{i}", use_container_width=True): 
                              search_actor_movies(actor['name']); st.rerun()
             else: st.info("No cast info available.")
@@ -528,7 +530,7 @@ else:
             revs = get_reviews(m['title'])
             if not revs.empty:
                 for _, r in revs.iterrows():
-                    st.markdown(f"""<div class="review-card"><div><strong>{r['username']}</strong> <span class="sentiment-pos">{r['sentiment']}</span></div><div style="margin-top:5px; color:#ddd;">"{r['review']}"</div></div>""", unsafe_allow_html=True)
+                    st.markdown(textwrap.dedent(f"""<div class="review-card"><div><strong>{r['username']}</strong> <span class="sentiment-pos">{r['sentiment']}</span></div><div style="margin-top:5px; color:#ddd;">"{r['review']}"</div></div>""", unsafe_allow_html=True)
             else:
                 st.caption("No reviews yet. Be the first!")
 
@@ -652,7 +654,7 @@ else:
                     col_ex_1, col_ex_2, col_ex_3, col_ex_4, col_ex_5 = st.columns(5)
                     with col_ex_1:
                         link_url = f"?id={exact_grid_item['id']}&user={st.session_state.username}"
-                        st.markdown(f"""
+                        st.markdown(textwrap.dedent(f"""
                         <a href="{link_url}" target="_self" style="text-decoration:none;">
                             <div class="movie-card">
                                 <img src="{exact_grid_item['poster']}">
@@ -662,7 +664,7 @@ else:
                                 </div>
                             </div>
                         </a>
-                        """, unsafe_allow_html=True)
+                        """), unsafe_allow_html=True)
                         
                     st.markdown("<br>", unsafe_allow_html=True)
                     st.markdown(f"### Movies related to {exact_movie['title']}")
