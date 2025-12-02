@@ -530,7 +530,7 @@ else:
             revs = get_reviews(m['title'])
             if not revs.empty:
                 for _, r in revs.iterrows():
-                    st.markdown(textwrap.dedent(f"""<div class="review-card"><div><strong>{r['username']}</strong> <span class="sentiment-pos">{r['sentiment']}</span></div><div style="margin-top:5px; color:#ddd;">"{r['review']}"</div></div>""", unsafe_allow_html=True)
+                    st.markdown(textwrap.dedent(f"""<div class="review-card"><div><strong>{r['username']}</strong> <span class="sentiment-pos">{r['sentiment']}</span></div><div style="margin-top:5px; color:#ddd;">"{r['review']}"</div></div>"""), unsafe_allow_html=True)
             else:
                 st.caption("No reviews yet. Be the first!")
 
