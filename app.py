@@ -431,7 +431,7 @@ if not st.session_state.logged_in:
 
 else:
     # --- LOGGED IN HEADER ---
-    st.markdown(textwrap.dedent(f"""<div class="nav-header"><div class="logo">CineMatch</div><div class="user-badge">👤 {st.session_state.username}</div></div>""", unsafe_allow_html=True)
+    st.markdown(textwrap.dedent(f"""<div class="nav-header"><div class="logo">CineMatch</div><div class="user-badge">👤 {st.session_state.username}</div></div>"""), unsafe_allow_html=True)
     
     # --- SIDEBAR ---
     with st.sidebar:
