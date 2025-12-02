@@ -113,18 +113,6 @@ st.markdown("""
     
     /* REVIEWS */
     .review-card { background: #1f2633; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #e50914; }
-    .sentiment-pos { color: #46d369; font-weight: bold; font-size: 0.8rem; float: right; }
-    
-    /* BUTTONS */
-    .stButton>button { 
-        background: linear-gradient(135deg, #e50914, #ff5f6d); color: white; border-radius: 8px; border: none; font-weight: 700; padding: 10px 0; transition: 0.3s; width: 100%;
-    }
-    .stButton>button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4); }
-</style>
-""", unsafe_allow_html=True)
-
-# ==========================================
-# 3. DATABASE & AUTH
 # ==========================================
 def make_hashes(p): return hashlib.sha256(str.encode(p)).hexdigest()
 
@@ -338,39 +326,6 @@ def recommend_legacy(movie_title):
     except: return []
 
 def get_top_movies():
-    C=movies['vote_average'].mean(); m=movies['vote_count'].quantile(0.9)
-    q=movies.copy().loc[movies['vote_count']>=m]
-    q['score']=q.apply(lambda x: (x['vote_count']/(x['vote_count']+m)*x['vote_average'])+(m/(m+x['vote_count'])*C), axis=1)
-    return q.sort_values('score',ascending=False).head(20)
-
-# HELPER: Render Grid
-def display_movies_grid(movies_to_show):
-    if not movies_to_show:
-        st.info("No movies found.")
-        return
-    for i in range(0, len(movies_to_show), 5):
-        # Added gap="medium" for horizontal spacing
-        cols = st.columns(5, gap="medium")
-        batch = movies_to_show[i:i+5]
-        for idx, data in enumerate(batch):
-            with cols[idx]:
-                link_url = f"?id={data['id']}&user={st.session_state.username}"
-                st.markdown(textwrap.dedent(f"""
-                <a href="{link_url}" target="_self" style="text-decoration:none;">
-                    <div class="movie-card">
-                        <img src="{data['poster']}">
-                        <div class="card-content">
-                            <div class="card-title">{data['title']}</div>
-                            <div class="card-meta">{data['rating']}</div>
-                        </div>
-                    </div>
-                </a>
-                """), unsafe_allow_html=True)
-
-# Navigation
-def set_detail(movie_id): 
-    row = movies[movies['movie_id'] == movie_id].iloc[0]
-    data = process_movie_for_ui(row)
     st.session_state.view_mode='detail'; st.session_state.detail_movie=data
     st.query_params["id"] = movie_id 
 
